@@ -59,7 +59,7 @@ class BankSystemTest {
     @Test
     @Order(3)
     @DisplayName("Test 3: Deposit with zero amount")
-    void testDepositZeroAmount_WhenDepositAmountIsZero_ReturnError() {
+    void testDepositZeroAmount_WhenDepositAmountIsZero_ReturnAmountMustBePositive() {
         SavingsAccount account = new SavingsAccount("Shiedrick Bacolod");
         account.deposit(0);
         assertEquals(0.0, account.getBalance());
@@ -70,7 +70,7 @@ class BankSystemTest {
     @Test
     @Order(4)
     @DisplayName("Test 4: Deposit with negative amount")
-    void testDepositNegativeAmount_WhenDepositAmountIsNegative_ReturnError() {
+    void testDepositNegativeAmount_WhenDepositAmountIsNegative_ReturnAmountMustBePositive() {
         SavingsAccount account = new SavingsAccount("Shiedrick Bacolod");
         account.deposit(-500);
         assertEquals(0.0, account.getBalance());
@@ -95,7 +95,7 @@ class BankSystemTest {
     @Test
     @Order(6)
     @DisplayName("Test 6: Withdraw with insufficient funds")
-    void testWithdrawInsufficientFunds_WhenInsuffiecientFunds_ReturnError() {
+    void testWithdrawInsufficientFunds_WhenInsuffiecientFunds_ReturnInsufficientBalance() {
         SavingsAccount account = new SavingsAccount("Shiedrick Bacolod");
         final double depositAmount = 1000;
         final double withdrawAmount = 1500;
@@ -109,7 +109,7 @@ class BankSystemTest {
     @Test
     @Order(7)
     @DisplayName("Test 7: Withdraw with negative amount")
-    void testWithdrawNegativeAmount_WhenWithdrawnAmountIsNegative_ReturnError() {
+    void testWithdrawNegativeAmount_WhenWithdrawnAmountIsNegative_ReturnAmountMustBePositive() {
         SavingsAccount account = new SavingsAccount("Shiedrick Bacolod");
         final double depositAmount = 1000;
         final double negativeAmount = -100;
@@ -170,7 +170,7 @@ class BankSystemTest {
     @Test
     @Order(12)
     @DisplayName("Test 12: Check balance after multiple transactions")
-    void testBalanceAfterMultipleTransactions_ReturnCorrectBalance() {
+    void testGetBalanceMethod_WhenMultipleTransactions_ReturnCorrectBalance() {
         SavingsAccount account = new SavingsAccount("Shiedrick Bacolod");
         account.deposit(1000);
         account.withdraw(500);
@@ -181,7 +181,7 @@ class BankSystemTest {
     @Test
     @Order(13)
     @DisplayName("Test 13: Withdraw exact balance should leave zero")
-    void testWithdrawExactBalance() {
+    void testWithdrawExactBalance_WhenWithdrawExactAmountAsBalance_ReturnCorrectBalance() {
         SavingsAccount account = new SavingsAccount("Shiedrick Bacolod");
         account.deposit(1000);
         outContent.reset();
@@ -195,7 +195,7 @@ class BankSystemTest {
     @Test
     @Order(14)
     @DisplayName("Test 14: Multiple deposits should accumulate")
-    void testMultipleDeposits() {
+    void testMultipleDeposits_WhenMultipleDeposits_ReturnTotalBalance() {
         SavingsAccount account = new SavingsAccount("Shiedrick Bacolod");
 
         account.deposit(500);
@@ -207,7 +207,7 @@ class BankSystemTest {
     @Test
     @Order(15)
     @DisplayName("Test 15: Deposit after unfreeze should work")
-    void testDepositAfterUnfreeze() {
+    void testDepositAfterUnfreeze_WhenUnfreezeAccount_ReturnDepositedAmount() {
         SavingsAccount account = new SavingsAccount("Shiedrick Bacolod");
 
         account.freezeAccount();
