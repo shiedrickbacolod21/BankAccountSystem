@@ -37,20 +37,20 @@ public class SavingsAccount extends AbstractBankAccount {
         final double deposit11500 = 11500.00;
         final double withdraw100 = 100.00;
 
-        System.out.println("Bank Account System");
+        System.out.println("=== BANK ACCOUNT SYSTEM ===");
         SavingsAccount account = new SavingsAccount("Shiedrick Bacolod");
         System.out.println("Owner: " + account.getOwnerName());
         account.deposit(deposit1000);
-        System.out.printf("Deposited amount: Php %.2f -- ", deposit0);
-        account.deposit(deposit0);//System.out.println();
-        System.out.printf("Deposited amount: Php %.2f -- ", depositNegative);
+        System.out.printf("Deposited amount: Php %.2f || ", deposit0);
+        account.deposit(deposit0);
+        System.out.printf("Deposited amount: Php %.2f || ", depositNegative);
         account.deposit(depositNegative);
-        System.out.println("Current Balance: Php " + (int) account.getBalance() + ".");
+        System.out.printf("Current Balance: Php %.2f ", account.getBalance());
         account.withdraw(withdraw500);
-        System.out.println("New Balance: Php " + (int) account.getBalance() + ".");
-        System.out.printf("Withdrawn amount: Php %.2f -- ", withdraw1500);
+        System.out.printf("New Balance: Php %.2f ", account.getBalance());
+        System.out.printf("Withdrawn amount: Php %.2f || ", withdraw1500);
         account.withdraw(withdraw1500);
-        System.out.printf("Withdrawn amount: Php %.2f -- ", withdrawNegative);
+        System.out.printf("Withdrawn amount: Php %.2f || ", withdrawNegative);
         account.withdraw(withdrawNegative);
         account.freezeAccount();
         account.deposit(deposit11500);
@@ -59,6 +59,6 @@ public class SavingsAccount extends AbstractBankAccount {
         account.withdraw(withdraw100);
         System.out.print("Account frozen: ");
         System.out.println(account.isFrozen());
-        System.out.println("Total Balance: Php " + (int) account.getBalance() + ".");
+        System.out.printf("Total Balance: Php %.2f ", account.getBalance());
     }
 }
