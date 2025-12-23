@@ -1,9 +1,7 @@
 package bankaccount;
 
 public class SavingsAccount extends AbstractBankAccount {
-    /**
-     * The name of the account owner.
-     */
+    /** The name of the account owner. */
     private String ownerName;
 
     /**
