@@ -33,7 +33,7 @@ class BankSystemTest {
     
     @AfterAll
     static void tearDownAll() {
-        System.out.println("All tests are done");
+        System.out.println("=== All tests are done ===");
     }
 
     @Test
@@ -43,6 +43,7 @@ class BankSystemTest {
         SavingsAccount account = new SavingsAccount("Shiedrick Bacolod");
         assertEquals("Shiedrick Bacolod", account.getOwnerName(),
                 "Doesn't match the expected output");
+        System.out.println("Owner: " + account.getOwnerName());
     }
 
     @Test
