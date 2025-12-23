@@ -94,7 +94,7 @@ public abstract class AbstractBankAccount implements BankAccount {
     }
 
     /**
-     * Unfreezes the account, allowing deposits and withdrawals.
+     * UnFreezes the account, allowing deposits and withdrawals.
      */
     public void unfreezeAccount() {
         isFrozen = false;
