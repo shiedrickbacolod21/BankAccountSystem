@@ -46,8 +46,10 @@ public class SavingsAccount extends AbstractBankAccount {
         System.out.printf("Deposited amount: Php %.2f || ", depositNegative);
         account.deposit(depositNegative);
         System.out.printf("Current Balance: Php %.2f ", account.getBalance());
+        System.out.println();
         account.withdraw(withdraw500);
         System.out.printf("New Balance: Php %.2f ", account.getBalance());
+        System.out.println();
         System.out.printf("Withdrawn amount: Php %.2f || ", withdraw1500);
         account.withdraw(withdraw1500);
         System.out.printf("Withdrawn amount: Php %.2f || ", withdrawNegative);
