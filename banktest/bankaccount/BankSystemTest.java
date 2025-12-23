@@ -219,7 +219,6 @@ class BankSystemTest {
         assertTrue(outContent.toString().contains("Deposited: Php 500."));
     }
 
-
     @Test
     @DisplayName("Main Function")
     void testMain_ReturnVoid() {

@@ -28,30 +28,37 @@ public class SavingsAccount extends AbstractBankAccount {
      * @param args Main Function.
      */
     public static void main(final String[] args) {
-        final int deposit1000 = 1000;
-        final int deposit0 = 0;
-        final int depositNegative = -500;
-        final int withdraw500 = 500;
-        final int withdraw1500 = 1500;
-        final int withdrawNegative = -500;
-        final int deposit11500 = 11500;
-        final int withdraw100 = 100;
+        final double deposit1000 = 1000.00;
+        final double deposit0 = 0.00;
+        final double depositNegative = -500.00;
+        final double withdraw500 = 500.00;
+        final double withdraw1500 = 1500.00;
+        final double withdrawNegative = -500.00;
+        final double deposit11500 = 11500.00;
+        final double withdraw100 = 100.00;
 
         System.out.println("Bank Account System");
         SavingsAccount account = new SavingsAccount("Shiedrick Bacolod");
         System.out.println("Owner: " + account.getOwnerName());
         account.deposit(deposit1000);
-        account.deposit(deposit0);
+        System.out.printf("Deposited amount: Php %.2f -- ", deposit0);
+        account.deposit(deposit0);//System.out.println();
+        System.out.printf("Deposited amount: Php %.2f -- ", depositNegative);
         account.deposit(depositNegative);
+        System.out.println("Current Balance: Php " + (int) account.getBalance() + ".");
         account.withdraw(withdraw500);
+        System.out.println("New Balance: Php " + (int) account.getBalance() + ".");
+        System.out.printf("Withdrawn amount: Php %.2f -- ", withdraw1500);
         account.withdraw(withdraw1500);
+        System.out.printf("Withdrawn amount: Php %.2f -- ", withdrawNegative);
         account.withdraw(withdrawNegative);
         account.freezeAccount();
         account.deposit(deposit11500);
         account.withdraw(withdraw500);
         account.unfreezeAccount();
         account.withdraw(withdraw100);
+        System.out.print("Account frozen: ");
         System.out.println(account.isFrozen());
-        System.out.println("Balance: Php " + (int) account.getBalance() + ".");
+        System.out.println("Total Balance: Php " + (int) account.getBalance() + ".");
     }
 }

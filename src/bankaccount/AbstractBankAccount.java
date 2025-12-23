@@ -22,10 +22,10 @@ public abstract class AbstractBankAccount implements BankAccount {
      */
     public void deposit(final double amount) {
         if (isFrozen) {
-            System.out.println("Account is frozen. Can't deposit.");
+            System.err.println("Account is frozen. Can't deposit.");
             return;
         } else if (amount <= 0) {
-            System.out.println("The deposit amount must be positive.");
+            System.err.println("The deposit amount must be positive.");
             return;
         } else {
             balance += amount;
@@ -41,13 +41,13 @@ public abstract class AbstractBankAccount implements BankAccount {
      */
     public void withdraw(final double amount) {
         if (isFrozen) {
-            System.out.println("Account is frozen. Can't withdraw");
+            System.err.println("Account is frozen. Can't withdraw.");
             return;
         } else if (amount <= 0) {
-            System.out.println("The withdrawn amount must be positive.");
+            System.err.println("The withdrawn amount must be positive.");
             return;
         } else if (amount > balance) {
-            System.out.println("Insufficient balance.");
+            System.err.println("Insufficient balance.");
             return;
         } else {
             balance -= amount;
@@ -78,7 +78,7 @@ public abstract class AbstractBankAccount implements BankAccount {
      */
     public void freezeAccount() {
         isFrozen = true;
-        System.out.println("Account has been frozen.");
+        System.err.println("Account has been frozen.");
     }
 
     /**
