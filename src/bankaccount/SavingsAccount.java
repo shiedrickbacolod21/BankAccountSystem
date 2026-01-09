@@ -1,10 +1,14 @@
 package bankaccount;
 
+import java.util.List;
+
 public class SavingsAccount extends AbstractBankAccount {
     /** The name of the account owner. */
     private String ownerName;
 
     /**
+     * Constructs a new SavingsAccount with the given owner name.
+     *
      * @param oOwnerName the name of the account owner
      */
     public SavingsAccount(final String oOwnerName) {
@@ -20,45 +24,96 @@ public class SavingsAccount extends AbstractBankAccount {
         return ownerName;
     }
 
+    @FunctionalInterface
+    interface ThrowingRunnable {
+        void run() throws Exception;
+    }
+
+    /**
+     * Utility method to run an action with a separator line.
+     *
+     * @param action the Runnable action to execute
+     */
+    private static void run(final ThrowingRunnable action) {
+        System.out.println("---------------------------");
+        try {
+            action.run();
+        } catch (Exception e) {
+            System.out.println(
+                    e.getClass().getSimpleName() + ": " + e.getMessage());
+        }
+    }
+
     /**
      * The main entry point of the Bank Account System.
      *
      * @param args Main Function.
      */
     public static void main(final String[] args) {
+
         final double deposit1000 = 1000.00;
         final double deposit0 = 0.00;
         final double depositNegative = -500.00;
+        final double withdraw100 = 100.00;
         final double withdraw500 = 500.00;
         final double withdraw1500 = 1500.00;
-        final double withdrawNegative = -500.00;
-        final double deposit11500 = 11500.00;
-        final double withdraw100 = 100.00;
+        final double withdrawNegative = -100.00;
+        final double deposit500 = 500.00;
+        final double filterAmount = 500.00;
+        final int accountId = 100;
 
         System.out.println("=== BANK ACCOUNT SYSTEM ===");
-        SavingsAccount account = new SavingsAccount("Shiedrick Bacolod");
+        BankAccountManager manager = new BankAccountManager();
+        SavingsAccount account = new SavingsAccount("Shiedrick Bacolod\n");
         System.out.println("Owner: " + account.getOwnerName());
-        account.deposit(deposit1000);
-        System.out.printf("Deposited amount: Php %.2f || ", deposit0);
-        account.deposit(deposit0);
-        System.out.printf("Deposited amount: Php %.2f || ", depositNegative);
-        account.deposit(depositNegative);
-        System.out.printf("Current Balance: Php %.2f ", account.getBalance());
+
+        manager.addAccount(account);
+        manager.listAccounts();
         System.out.println();
-        account.withdraw(withdraw500);
-        System.out.printf("New Balance: Php %.2f ", account.getBalance());
-        System.out.println();
-        System.out.printf("Withdrawn amount: Php %.2f || ", withdraw1500);
-        account.withdraw(withdraw1500);
-        System.out.printf("Withdrawn amount: Php %.2f || ", withdrawNegative);
-        account.withdraw(withdrawNegative);
+
+        run(() -> account.deposit(deposit1000));
+        run(() -> account.deposit(deposit0));
+        run(() -> account.deposit(depositNegative));
+
+        System.out.println("---------------------------");
+        System.out.printf("Current Balance: Php %.2f\n", account.getBalance());
+
+        run(() -> account.withdraw(withdraw500));
+        run(() -> account.withdraw(withdraw1500));
+        run(() -> account.withdraw(withdrawNegative));
+
+        System.out.println("--------------------------");
         account.freezeAccount();
-        account.deposit(deposit11500);
-        account.withdraw(withdraw500);
+        run(() -> account.deposit(deposit500));
+        run(() -> account.withdraw(withdraw500));
+        System.out.println("--------------------------");
         account.unfreezeAccount();
-        account.withdraw(withdraw100);
-        System.out.print("Account frozen: ");
-        System.out.println(account.isFrozen());
-        System.out.printf("Total Balance: Php %.2f ", account.getBalance());
+        run(() -> account.withdraw(withdraw100));
+        System.out.println("--------------------------");
+
+        System.out.printf("New Balance: Php %.2f\n", account.getBalance());
+        System.out.println("--------------------------");
+
+        List<Transaction> history = account.getTransactionHistory();
+        try {
+            List<Transaction> filtered = manager
+                    .filterTransactionsAbove(filterAmount, history);
+            System.out.println(
+                    "Filtered Transactions:");
+            filtered.forEach(System.out::println);
+        } catch (InvalidAmountException e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("---------------------------");
+        List<Transaction> sorted = manager.sortTransactionsByAmount(history);
+        System.out.println("Sorted Transactions:");
+        sorted.forEach(System.out::println);
+
+        run(() -> {
+            manager.getAccount(accountId);
+            System.out.println("Exception: NullPointerException");
+        });
     }
+
 }

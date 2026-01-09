@@ -1,16 +1,25 @@
 package bankaccount;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class AbstractBankAccount implements BankAccount {
     /** The current balance of the account. */
     private double balance;
     /** The frozen status of the account. */
     private boolean isFrozen;
+
+    /** List of transactions performed on this account. */
+    private List<Transaction> transactionHistory;
+
     /** ANSI escape code to reset console text formatting. */
     public static final String ANSI_RESET = "\u001B[0m";
     /** ANSI escape code to set console text color to red. */
     public static final String ANSI_RED = "\u001B[31m";
     /** ANSI escape code to set console text color to green. */
     public static final String ANSI_GREEN = "\u001B[32m";
+    /** ANSI escape code to set console text color to yellow. */
+    public static final String ANSI_YELLOW = "\u001B[33m";
 
     /**
      * Initializes balance to 0 and isFrozen to false.
@@ -18,6 +27,7 @@ public abstract class AbstractBankAccount implements BankAccount {
     public AbstractBankAccount() {
         this.balance = 0;
         this.isFrozen = false;
+        this.transactionHistory = new ArrayList<>();
     }
 
     /**
@@ -26,19 +36,24 @@ public abstract class AbstractBankAccount implements BankAccount {
      *
      * @param amount the amount to deposit
      */
-    public void deposit(final double amount) {
+    @Override
+    public synchronized void deposit(final double amount)
+            throws InvalidAmountException, AccountFrozenException {
         if (isFrozen) {
-            System.out.println(ANSI_RED + "Account is frozen. Can't deposit."
+            System.out.println(ANSI_RED + "Can't deposit."
                     + ANSI_RESET);
-            return;
+            throw new AccountFrozenException(
+                    "Account is frozen.");
         } else if (amount <= 0) {
-            System.out.println(ANSI_RED + "The deposit amount must be positive."
-                    + ANSI_RESET);
-            return;
+            System.out.println(ANSI_RED + "Invalid deposit amount: "
+                    + String.format("%.2f", amount) + ANSI_RESET);
+            throw new InvalidAmountException(
+                    "Deposit must be greater than 0.");
         } else {
             balance += amount;
-            System.out.printf("Deposited: Php %.2f ", amount);
-            System.out.println();
+            transactionHistory.add(new Transaction("Deposit", amount));
+            System.out.println(ANSI_GREEN + "Deposited: Php "
+                    + String.format("%.2f", amount) + ANSI_RESET);
         }
     }
 
@@ -48,22 +63,29 @@ public abstract class AbstractBankAccount implements BankAccount {
      *
      * @param amount
      */
-    public void withdraw(final double amount) {
+    public synchronized void withdraw(final double amount)
+            throws InvalidAmountException, AccountFrozenException,
+            InsufficientFundsException {
         if (isFrozen) {
-            System.out.println(ANSI_RED + "Account is frozen. Can't withdraw."
+            System.out.println(ANSI_RED + "Can't withdraw."
                     + ANSI_RESET);
-            return;
+            throw new AccountFrozenException(
+                    "Account is frozen.");
         } else if (amount <= 0) {
-            System.out.println(ANSI_RED
-                    + "The withdrawn amount must be positive." + ANSI_RESET);
-            return;
+            System.out.println(ANSI_RED + "Invalid withdrawn amount: "
+                    + String.format("%.2f", amount) + ANSI_RESET);
+            throw new InvalidAmountException(
+                    "Withdrawn amount must be greater than 0.");
         } else if (amount > balance) {
-            System.out.println(ANSI_RED + "Insufficient balance." + ANSI_RESET);
-            return;
+            System.out.println(ANSI_RED + "Insufficient balance. Withdrawn: "
+                    + String.format("%.2f", amount) + ANSI_RESET);
+            throw new InsufficientFundsException(
+                    "Balance not enough.");
         } else {
             balance -= amount;
-            System.out.printf("Withdrawn: Php %.2f", amount);
-            System.out.println();
+            transactionHistory.add(new Transaction("Withdraw", amount));
+            System.out.println(ANSI_YELLOW + "Withdrawn: Php "
+                    + String.format("%.2f", amount) + ANSI_RESET);
         }
     }
 
@@ -100,5 +122,10 @@ public abstract class AbstractBankAccount implements BankAccount {
         isFrozen = false;
         System.out.println(
                 ANSI_GREEN + "Account has been unfrozen." + ANSI_RESET);
+    }
+
+    @Override
+    public final List<Transaction> getTransactionHistory() {
+        return transactionHistory;
     }
 }
